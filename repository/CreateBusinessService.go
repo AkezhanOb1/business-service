@@ -1,12 +1,11 @@
 package repository
 
 import (
-	pb "github.com/AkezhanOb1/diplomaProject/api/proto/business/services"
-	config "github.com/AkezhanOb1/diplomaProject/configs"
+	pb "github.com/AkezhanOb1/business-service/api"
+	"github.com/AkezhanOb1/business-service/config"
 	"context"
-	"log"
 	"github.com/jackc/pgx/v4"
-
+	"log"
 )
 
 //GetBusinessServiceRepository is a repository that responsible to all the requests to DB
@@ -41,13 +40,11 @@ func  CreateBusinessService(ctx context.Context, serviceName string, subCategori
 
 		_, err = tx.Exec(ctx, sqlQuery, serviceID, subCategories[i])
 		if err != nil {
-			log.Println(err)
 			return nil, err
 		}
 
 		err = tx.Commit(ctx)
 		if err != nil {
-			log.Println(err)
 			return nil, err
 		}
 

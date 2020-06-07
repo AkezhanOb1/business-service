@@ -1,9 +1,8 @@
-package service
+package repository
 
 import (
-	pb "github.com/AkezhanOb1/diplomaProject/api/proto/business/services"
-	config "github.com/AkezhanOb1/diplomaProject/configs"
-	"log"
+	pb "github.com/AkezhanOb1/business-service/api"
+	"github.com/AkezhanOb1/business-service/config"
 	"github.com/jackc/pgx/v4"
 	"context"
 
@@ -18,13 +17,7 @@ func GetBusinessServicesRepository(ctx context.Context) (*pb.GetBusinessServices
 		return nil, err
 	}
 
-	defer func() {
-		err =  conn.Close(ctx)
-		if err != nil {
-			log.Println(err)
-		}
-	}()
-
+	defer conn.Close(ctx)
 	sqlQuery := `SELECT b.id, b.name, array_agg(bsc.id) FROM business_service b
 				 INNER JOIN business_sub_categories_services
 					ON b.id = business_sub_categories_services.business_services_id
